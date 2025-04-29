@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Запропонувати обмін - Платформа обміну книгами{% endblock %}
+
+{% block content %}
+    <h1>Запропонувати обмін</h1>
+
+    <div class="requested-book">
+        <h2>Книга, яку ви хочете отримати:</h2>
+        <p><strong>Назва:</strong> {{ requested_book.title }}</p>
+        <p><strong>Автор:</strong> {{ requested_book.author }}</p>
+        <p><strong>Власник:</strong> {{ requested_book.owner.username }}</p>
+    </div>
+
+    <div class="offer-form">
+        <h2>Виберіть вашу книгу для обміну:</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Надіслати пропозицію</button>
+        </form>
+    </div>
+
+    <a href="{% url 'book_detail' requested_book.id %}">Скасувати</a>
+{% endblock %}

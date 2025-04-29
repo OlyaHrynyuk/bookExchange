@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} - Платформа обміну книгами{% endblock %}
+
+{% block content %}
+    <h1>{{ book.title }}</h1>
+
+    <div class="book-details">
+        <p><strong>Автор:</strong> {{ book.author }}</p>
+        <p><strong>Категорія:</strong> {{ book.category.name }}</p>
+        <p><strong>Власник:</strong> {{ book.owner.username }}</p>
+
+        {% if book.description %}
+            <p><strong>Опис:</strong> {{ book.description }}</p>
+        {% endif %}
+
+        {% if book.image %}
+            <img src="{{ book.image.url }}" alt="{{ book.title }}" style="max-width: 300px;">
+        {% endif %}
+    </div>
+
+    {% if user.is_authenticated and user != book.owner and book.available %}
+        <div class="offer-section">
+            <h2>Запропонувати обмін</h2>
+            {% if offer_form %}
+                <form method="post" action="{% url 'make_offer' book.id %}">
+                    {% csrf_token %}
+                    {{ offer_form.as_p }}
+                    <button type="submit">Надіслати пропозицію</button>
+                </form>
+            {% else %}
+                <p>У вас немає книг, доступних для обміну.</p>
+                <a href="{% url 'add_book' %}" class="button">Додати книгу</a>
+            {% endif %}
+        </div>
+    {% elif user == book.owner %}
+        <div class="owner-actions">
+            <a href="{% url 'edit_book' book.id %}" class="button">Редагувати</a>
+            <a href="{% url 'delete_book' book.id %}" class="button" style="background-color: #dc3545;">Видалити</a>
+        </div>
+    {% endif %}
+
+    <a href="{% url 'book_list' %}">Назад до списку книг</a>
+{% endblock %}

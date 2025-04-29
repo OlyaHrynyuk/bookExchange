@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Мої книги - Платформа обміну книгами{% endblock %}
+
+{% block content %}
+    <h1>Мої книги</h1>
+
+    <a href="{% url 'add_book' %}" class="button">Додати нову книгу</a>
+
+    <div class="books-container">
+        {% if books %}
+            {% for book in books %}
+                <div class="book-card">
+                    <h3>{{ book.title }}</h3>
+                    <p><strong>Автор:</strong> {{ book.author }}</p>
+                    <p><strong>Категорія:</strong> {{ book.category.name }}</p>
+                    <p><strong>Статус:</strong> {% if book.available %}Доступна для обміну{% else %}Недоступна{% endif %}</p>
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" alt="{{ book.title }}" style="max-width: 200px;">
+                    {% endif %}
+                    <div class="book-actions">
+                        <a href="{% url 'book_detail' book.id %}">Деталі</a> |
+                        <a href="{% url 'edit_book' book.id %}">Редагувати</a> |
+                        <a href="{% url 'delete_book' book.id %}">Видалити</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>У вас ще немає книг. Додайте першу книгу для обміну!</p>
+        {% endif %}
+    </div>
+{% endblock %}

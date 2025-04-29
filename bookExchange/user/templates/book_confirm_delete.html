@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Видалення книги - Платформа обміну книгами{% endblock %}
+
+{% block content %}
+    <h1>Видалення книги</h1>
+
+    <p>Ви впевнені, що хочете видалити книгу "{{ book.title }}"?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" style="background-color: #dc3545;">Так, видалити</button>
+    </form>
+
+    <a href="{% url 'my_books' %}">Скасувати</a>
+{% endblock %}

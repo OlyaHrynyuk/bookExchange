@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ action }} книгу - Платформа обміну книгами{% endblock %}
+
+{% block content %}
+    <h1>{{ action }} книгу</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Зберегти</button>
+    </form>
+
+    <a href="{% url 'my_books' %}">Скасувати</a>
+{% endblock %}

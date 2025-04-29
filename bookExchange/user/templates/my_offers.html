@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}Мої пропозиції обміну - Платформа обміну книгами{% endblock %}
+
+{% block content %}
+    <h1>Мої пропозиції обміну</h1>
+
+    <h2>Отримані пропозиції</h2>
+    <div class="offers-container">
+        {% if incoming_offers %}
+            {% for offer in incoming_offers %}
+                <div class="offer-card">
+                    <h3>Пропозиція від {{ offer.offered_book.owner.username }}</h3>
+                    <p><strong>Запропонована книга:</strong> {{ offer.offered_book.title }} ({{ offer.offered_book.author }})</p>
+                    <p><strong>Ваша книга:</strong> {{ offer.requested_book.title }} ({{ offer.requested_book.author }})</p>
+                    <p><strong>Статус:</strong>
+                        {% if offer.status == 'pending' %}
+                            Очікує відповіді
+                            <div class="offer-actions">
+                                <a href="{% url 'respond_to_offer' offer.id 'accept' %}" class="button">Прийняти</a>
+                                <a href="{% url 'respond_to_offer' offer.id 'reject' %}" class="button" style="background-color: #dc3545;">Відхилити</a>
+                            </div>
+                        {% elif offer.status == 'accepted' %}
+                            Прийнято
+                        {% else %}
+                            Відхилено
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>У вас немає отриманих пропозицій обміну.</p>
+        {% endif %}
+    </div>
+
+    <h2>Надіслані пропозиції</h2>
+    <div class="offers-container">
+        {% if outgoing_offers %}
+            {% for offer in outgoing_offers %}
+                <div class="offer-card">
+                    <h3>Пропозиція для {{ offer.requested_book.owner.username }}</h3>
+                    <p><strong>Ваша книга:</strong> {{ offer.offered_book.title }} ({{ offer.offered_book.author }})</p>
+                    <p><strong>Запитувана книга:</strong> {{ offer.requested_book.title }} ({{ offer.requested_book.author }})</p>
+                    <p><strong>Статус:</strong>
+                        {% if offer.status == 'pending' %}
+                            Очікує відповіді
+                        {% elif offer.status == 'accepted' %}
+                            Прийнято
+                        {% else %}
+                            Відхилено
+                        {% endif %}
+                    </p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>У вас немає надісланих пропозицій обміну.</p>
+        {% endif %}
+    </div>
+{% endblock %}

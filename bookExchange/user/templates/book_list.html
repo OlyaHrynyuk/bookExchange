@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Книги для обміну - Платформа обміну книгами{% endblock %}
+
+{% block content %}
+    <h1>Книги для обміну</h1>
+
+    <div class="category-filter">
+        <form method="get">
+            <label for="category">Фільтр за категорією:</label>
+            <select name="category" id="category" onchange="this.form.submit()">
+                <option value="">Усі категорії</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"i" %}selected{% endif %}>
+                        {{ category.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    <div class="books-container">
+        {% if books %}
+            {% for book in books %}
+                <div class="book-card">
+                    <h3>{{ book.title }}</h3>
+                    <p><strong>Автор:</strong> {{ book.author }}</p>
+                    <p><strong>Категорія:</strong> {{ book.category.name }}</p>
+                    {% if book.image %}
+                        <img src="{{ book.image.url }}" alt="{{ book.title }}" style="max-width: 200px;">
+                    {% endif %}
+                    <p><a href="{% url 'book_detail' book.id %}">Детальніше</a></p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>На даний момент немає доступних книг для обміну.</p>
+        {% endif %}
+    </div>
+{% endblock %}
