@@ -171,3 +171,4 @@ def respond_to_offer(request, offer_id, action):
 
     offer.save()
     return redirect('my_offers')
+    #comment
